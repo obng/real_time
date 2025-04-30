@@ -37,7 +37,6 @@ public class EvaluationController {
                 req.getAbsentDelta(),
                 worker  // worker 설정
         );
-
         // 저장된 Evaluation 반환
         return evaluationRepository.save(eval);
     }
