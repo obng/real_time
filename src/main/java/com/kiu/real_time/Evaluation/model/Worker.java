@@ -1,8 +1,11 @@
 package com.kiu.real_time.Evaluation.model;
 
-//데이터베이스랑 연결필요
-
-import javax.persistence.*;
+import jakarta.persistence.*;
+//import javax.persistence.*;
+//import javax.persistence.Entity;
+//import javax.persistence.Id;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.GenerationType;
 
 @Entity
 public class Worker {

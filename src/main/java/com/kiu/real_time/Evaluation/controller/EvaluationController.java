@@ -10,7 +10,6 @@ import com.kiu.real_time.Evaluation.repository.EvaluationRepository;
 import com.kiu.real_time.Evaluation.repository.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -18,10 +17,10 @@ import java.util.List;
 public class EvaluationController {
 
     @Autowired
-    private EvaluationRepository evaluationRepository; // 수정: evaluationRepo -> evaluationRepository
+    private EvaluationRepository evaluationRepository;
 
     @Autowired
-    private WorkerRepository workerRepository; // 수정: workerRepo -> workerRepository
+    private WorkerRepository workerRepository;
 
     // 평가 등록
     @PostMapping("/evaluate/{workerId}")
@@ -49,7 +48,7 @@ public class EvaluationController {
                 .orElseThrow(() -> new RuntimeException("구직자가 존재하지 않습니다."));
 
         // 해당 Worker의 Evaluation 목록 가져오기
-        List<Evaluation> evals = evaluationRepository.findByWorkerId(workerId);
+        List<Evaluation> evals = evaluationRepository.findByWorker(worker);
 
         int base = 50;
 

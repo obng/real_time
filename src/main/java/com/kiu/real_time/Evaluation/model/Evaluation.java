@@ -1,24 +1,21 @@
 package com.kiu.real_time.Evaluation.model;
 
-//평가(한 구인자의 평가)
-// 데이터베이스랑 연결필요
-
-import javax.persistence.*;
+import jakarta.persistence.*;
+//import javax.persistence.*;
+//import jakarta.persistence.Entity;
+//import jakarta.persistence.Id;
 
 @Entity
 public class Evaluation {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 평가 항목들
     private int sincerityDelta;
     private int lateDelta;
     private int absentDelta;
 
-    // 한 명의 Worker(구인자)를 참조하는 외래키
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worker_id", nullable = false)
     private Worker worker;
@@ -27,7 +24,6 @@ public class Evaluation {
     public Evaluation() {
     }
 
-    // 생성자 (전체 필드 초기화용)
     public Evaluation(int sincerityDelta, int lateDelta, int absentDelta, Worker worker) {
         this.sincerityDelta = sincerityDelta;
         this.lateDelta = lateDelta;
