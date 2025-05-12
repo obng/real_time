@@ -26,7 +26,7 @@ export const chooseRoute = [
 export const ownerRoutes = [
   {
     type: 'collapse',
-    name: 'Dashboard',
+    name: '작업들',
     key: 'owner-dashboard',
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: '/owner/dashboard',
@@ -34,7 +34,7 @@ export const ownerRoutes = [
   },
   {
     type: 'collapse',
-    name: 'Notifications',
+    name: '알림림',
     key: 'owner-notifications',
     icon: <Icon fontSize="small">notifications</Icon>,
     route: '/owner/notifications',
@@ -42,7 +42,7 @@ export const ownerRoutes = [
   },
   {
     type: 'collapse',
-    name: 'Profile',
+    name: '나의 프로필',
     key: 'owner-profile',
     icon: <Icon fontSize="small">person</Icon>,
     route: '/owner/profile',
@@ -54,7 +54,7 @@ export const ownerRoutes = [
 export const workerRoutes = [
   {
     type: 'collapse',
-    name: 'Dashboard',
+    name: '작업들',
     key: 'worker-dashboard',
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: '/worker/dashboard',
@@ -62,7 +62,7 @@ export const workerRoutes = [
   },
   {
     type: 'collapse',
-    name: 'Notifications',
+    name: '알림',
     key: 'worker-notifications',
     icon: <Icon fontSize="small">notifications</Icon>,
     route: '/worker/notifications',
@@ -70,7 +70,7 @@ export const workerRoutes = [
   },
   {
     type: 'collapse',
-    name: 'Profile',
+    name: '나의 프로필',
     key: 'worker-profile',
     icon: <Icon fontSize="small">person</Icon>,
     route: '/worker/profile',
