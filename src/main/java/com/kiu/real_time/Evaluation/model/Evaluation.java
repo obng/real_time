@@ -1,6 +1,8 @@
 package com.kiu.real_time.Evaluation.model;
 
+import com.kiu.real_time.person.Worker;
 import jakarta.persistence.*;
+import lombok.Setter;
 //import javax.persistence.*;
 //import jakarta.persistence.Entity;
 //import jakarta.persistence.Id;
@@ -12,10 +14,14 @@ public class Evaluation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     private int sincerityDelta;
+    @Setter
     private int lateDelta;
+    @Setter
     private int absentDelta;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "worker_id", nullable = false)
     private Worker worker;
@@ -40,31 +46,16 @@ public class Evaluation {
         return sincerityDelta;
     }
 
-    public void setSincerityDelta(int sincerityDelta) {
-        this.sincerityDelta = sincerityDelta;
-    }
-
     public int getLateDelta() {
         return lateDelta;
-    }
-
-    public void setLateDelta(int lateDelta) {
-        this.lateDelta = lateDelta;
     }
 
     public int getAbsentDelta() {
         return absentDelta;
     }
 
-    public void setAbsentDelta(int absentDelta) {
-        this.absentDelta = absentDelta;
-    }
-
     public Worker getWorker() {
         return worker;
     }
 
-    public void setWorker(Worker worker) {
-        this.worker = worker;
-    }
 }

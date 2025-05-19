@@ -15,23 +15,25 @@ public class JobPosting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // 기본 키
+    private Long id;
 
-    private Integer workingHours; // 근무 시간
+    @Column(name = "working_hours")
+    private String workingHours;
 
-    private Integer numberOfWorkers; // 인력 수
+    @Column(name = "number_of_workers")
+    private Integer numberOfWorkers;
 
-    private String gender; // 성별
+    @Column(name = "work_location")
+    private String workLocation;
 
-    private String workLocation; // 근무지
+    @Column(name = "job_description", columnDefinition = "TEXT")
+    private String jobDescription;
 
-    @Column(columnDefinition = "TEXT")
-    private String jobDescription; // 업무 내용
-
-    private BigDecimal dailyWage; // 일당
+    @Column(name = "daily_wage")
+    private BigDecimal dailyWage;
 
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp createdAt; // 작성 시간
-
-
+    @org.hibernate.annotations.CreationTimestamp
+    private Timestamp createdAt;
 }
+

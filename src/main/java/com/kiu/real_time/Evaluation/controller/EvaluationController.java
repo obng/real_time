@@ -5,7 +5,7 @@ package com.kiu.real_time.Evaluation.controller;
 import com.kiu.real_time.Evaluation.dto.EvaluationRequest;  // 패키지 경로 수정
 import com.kiu.real_time.Evaluation.dto.ScoreSummary;
 import com.kiu.real_time.Evaluation.model.Evaluation;
-import com.kiu.real_time.Evaluation.model.Worker;
+import com.kiu.real_time.person.Worker;
 import com.kiu.real_time.Evaluation.repository.EvaluationRepository;
 import com.kiu.real_time.Evaluation.repository.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class EvaluationController {
 
     // 점수 조정 함수 (좋은 점수는 천천히, 나쁜 점수는 빠르게)
     private int adjustScore(int totalDelta, String type) {
-        int score = totalDelta;
+        double score = totalDelta;
 
         if (score > 0) { // 좋은 점수일 때
             if (type.equals("sincerity")) {
@@ -79,6 +79,6 @@ public class EvaluationController {
             }
         }
 
-        return score;
+        return (int) score;
     }
 }
