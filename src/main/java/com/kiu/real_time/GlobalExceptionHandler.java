@@ -1,4 +1,6 @@
-package com.kiu.real_time.job_postings;
+// Controller 예외 처리
+
+package com.kiu.real_time;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

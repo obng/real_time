@@ -20,7 +20,6 @@ function ComplexStatisticsCard({
   workLocation,
   jobDescription,
   dailyWage,
-  gender,
   numberOfWorkers,
   onApply,
 }) {
@@ -56,8 +55,6 @@ function ComplexStatisticsCard({
       {/* 하부 */}
       <MDBox pb={2} px={2}>
         <MDTypography component="p" variant="button" display="flex" fontWeight="bold">
-          {gender}
-          <br />
           선발 인원 수 : {numberOfWorkers}
         </MDTypography>
         <MDBox display="flex" justifyContent="flex-end" mt={2}>
@@ -106,7 +103,6 @@ ComplexStatisticsCard.propTypes = {
   workLocation: PropTypes.string.isRequired,
   jobDescription: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   dailyWage: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  gender: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   numberOfWorkers: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   onApply: PropTypes.func,
 };

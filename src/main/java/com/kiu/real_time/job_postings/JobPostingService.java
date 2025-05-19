@@ -1,5 +1,6 @@
 package com.kiu.real_time.job_postings;
 
+import com.kiu.real_time.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

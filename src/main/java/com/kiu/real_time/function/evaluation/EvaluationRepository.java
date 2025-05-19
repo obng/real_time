@@ -1,6 +1,5 @@
-package com.kiu.real_time.Evaluation.repository;
+package com.kiu.real_time.function.evaluation;
 
-import com.kiu.real_time.Evaluation.model.Evaluation;
 import com.kiu.real_time.person.Worker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;

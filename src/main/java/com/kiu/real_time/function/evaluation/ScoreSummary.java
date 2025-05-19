@@ -1,4 +1,4 @@
-package com.kiu.real_time.Evaluation.dto;
+package com.kiu.real_time.function.evaluation;
 
 
 public class ScoreSummary {

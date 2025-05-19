@@ -1,3 +1,5 @@
+// 공고 글 코드
+
 package com.kiu.real_time.job_postings;
 
 import jakarta.persistence.*;

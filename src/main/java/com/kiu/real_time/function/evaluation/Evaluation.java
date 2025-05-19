@@ -1,15 +1,17 @@
-package com.kiu.real_time.Evaluation.model;
+// 평가 점수
+
+package com.kiu.real_time.function.evaluation;
 
 import com.kiu.real_time.person.Worker;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
-//import javax.persistence.*;
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.Id;
 
+@Getter
 @Entity
 public class Evaluation {
 
+    // Getter & Setter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,27 +37,6 @@ public class Evaluation {
         this.lateDelta = lateDelta;
         this.absentDelta = absentDelta;
         this.worker = worker;
-    }
-
-    // Getter & Setter
-    public Long getId() {
-        return id;
-    }
-
-    public int getSincerityDelta() {
-        return sincerityDelta;
-    }
-
-    public int getLateDelta() {
-        return lateDelta;
-    }
-
-    public int getAbsentDelta() {
-        return absentDelta;
-    }
-
-    public Worker getWorker() {
-        return worker;
     }
 
 }
