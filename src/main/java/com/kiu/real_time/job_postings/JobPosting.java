@@ -1,7 +1,6 @@
-// 공고 글 코드
-
 package com.kiu.real_time.job_postings;
 
+import com.kiu.real_time.person.Owner;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,5 +36,9 @@ public class JobPosting {
     @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @org.hibernate.annotations.CreationTimestamp
     private Timestamp createdAt;
-}
 
+    // === Owner(사장님)와의 연관관계 추가 ===
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
+}

@@ -24,6 +24,9 @@ public class Worker {
     @Column(length = 10)
     private String gender;
 
+    @Column
+    private Integer age;
+
     @Column(name = "contact_number", length = 20)
     private String contactNumber;
     

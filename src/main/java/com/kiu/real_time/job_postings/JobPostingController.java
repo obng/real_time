@@ -17,22 +17,24 @@ public class JobPostingController {
     private final JobPostingService jobPostingService;
 
     @GetMapping
-    public ResponseEntity<List<JobPosting>> getAllJobPostings() {
-        return ResponseEntity.ok(jobPostingService.getAllJobPostings());
+    public ResponseEntity<List<JobPostingDto>> getAllJobPostings() {
+        List<JobPosting> postings = jobPostingService.getAllJobPostings();
+        List<JobPostingDto> dtos = postings.stream()
+                .map(jobPostingService::toDto)
+                .toList();
+        return ResponseEntity.ok(dtos);
     }
 
-    // 단일 공고 조회
     @GetMapping("/{id}")
-    public ResponseEntity<JobPosting> getJobPostingById(@PathVariable Integer id) {
-        return ResponseEntity.ok(jobPostingService.getJobPostingById(id));
+    public ResponseEntity<JobPostingDto> getJobPostingById(@PathVariable Long id) {
+        JobPosting posting = jobPostingService.getJobPostingById(Math.toIntExact(id));
+        return ResponseEntity.ok(jobPostingService.toDto(posting));
     }
 
-    // 공고 생성
     @PostMapping
-    public ResponseEntity<JobPosting> createJobPosting(@RequestBody JobPosting jobPosting) {
-        return new ResponseEntity<>(
-                jobPostingService.createJobPosting(jobPosting),
-                HttpStatus.CREATED
-        );
+    public ResponseEntity<JobPostingDto> createJobPosting(@RequestBody JobPostingDto jobPostingDto) {
+        JobPosting posting = jobPostingService.createJobPostingFromDto(jobPostingDto);
+        return new ResponseEntity<>(jobPostingService.toDto(posting), HttpStatus.CREATED);
     }
+
 }
