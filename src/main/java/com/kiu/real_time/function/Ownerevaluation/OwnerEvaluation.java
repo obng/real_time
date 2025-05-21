@@ -22,7 +22,7 @@ public class OwnerEvaluation {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boss_id", nullable = false)
+    @JoinColumn(name = "Owner_id", nullable = false)
     private Owner owner;
 
     public OwnerEvaluation() {}

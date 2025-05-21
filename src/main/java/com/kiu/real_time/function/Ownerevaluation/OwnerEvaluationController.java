@@ -1,13 +1,13 @@
 package com.kiu.real_time.function.Ownerevaluation;
 
 import com.kiu.real_time.person.owner.Owner;
-import com.kiu.real_time.person.owner.OwnerEvaluationRepository;
+import com.kiu.real_time.person.owner.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/boss")
+@RequestMapping("/api/owner")
 public class OwnerEvaluationController {
 
     @Autowired
@@ -23,23 +23,23 @@ public class OwnerEvaluationController {
         Owner owner = ownerRepository.findById(OwnerId)
                 .orElseThrow(() -> new RuntimeException("해당 사장이 존재하지 않습니다."));
 
-        OwnerEvaluation evaluation = new OwnerEvaluation(
+        OwnerEvaluation eval = new OwnerEvaluation(
                 req.getPaymentPunctuality(),
                 req.getWorkEnvironment(),
                 req.getWorkingHours(),
                 owner
         );
 
-        return ownerEvaluationRepository.save(evaluation);
+        return ownerEvaluationRepository.save(eval);
     }
 
     // 사장 평가 요약
-    @GetMapping("/summary/{bossId}")
-    public OwnerScoreSummary getBossScore(@PathVariable Long ownerId) {
+    @GetMapping("/summary/{ownerId}")
+    public OwnerScoreSummary getownerSummary(@PathVariable Long ownerId) {
         Owner owner = ownerRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("해당 사장이 존재하지 않습니다."));
 
-        List<OwnerEvaluation> evals = ownerEvaluationRepository.findByBoss(owner);
+        List<OwnerEvaluation> evals = ownerEvaluationRepository.findByOwner(owner);
 
         int base = 50;
 
@@ -53,7 +53,7 @@ public class OwnerEvaluationController {
 
     // 점수 조정 함수 (좋은 점수는 천천히, 나쁜 점수는 빠르게)
     private int adjustScore(int totalDelta, String type) {
-        int score = totalDelta;
+        double score = totalDelta;
 
         if (score > 0) {  // 좋은 점수일 때
             if (type.equals("paymentPunctuality")) {
@@ -73,6 +73,6 @@ public class OwnerEvaluationController {
             }
         }
 
-        return score;
+        return (int) score;
     }
 }
