@@ -20,8 +20,8 @@ import MDAvatar from "components/MDAvatar";
 import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
-import burceMars from "assets/images/bruce-mars.jpg";
-import backgroundImage from "assets/images/bg-profile.jpeg";
+import burceMars from "assets/images/dooly.png";
+import backgroundImage from "assets/images/doolycross.png";
 
 function Header({ children }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -60,8 +60,8 @@ function Header({ children }) {
         sx={{
           backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
             `${linearGradient(
-              rgba(gradients.info.main, 0.6),
-              rgba(gradients.info.state, 0.6)
+              rgba(gradients.info.main, 0),
+              rgba(gradients.info.state, 0)
             )}, url(${backgroundImage})`,
           backgroundSize: "cover",
           backgroundPosition: "50%",
@@ -84,10 +84,10 @@ function Header({ children }) {
           <Grid item>
             <MDBox height="100%" mt={0.5} lineHeight={1}>
               <MDTypography variant="h5" fontWeight="medium">
-                Richard Davis
+                둘리 박
               </MDTypography>
               <MDTypography variant="button" color="text" fontWeight="regular">
-                CEO / Co-Founder
+                알바생 / 학생
               </MDTypography>
             </MDBox>
           </Grid>
@@ -103,7 +103,7 @@ function Header({ children }) {
                   }
                 />
                 <Tab
-                  label="Message"
+                  label="메세지"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>
                       email
@@ -111,7 +111,7 @@ function Header({ children }) {
                   }
                 />
                 <Tab
-                  label="Settings"
+                  label="설정"
                   icon={
                     <Icon fontSize="small" sx={{ mt: -0.25 }}>
                       settings
