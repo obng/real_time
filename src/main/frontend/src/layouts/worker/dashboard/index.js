@@ -49,6 +49,7 @@ function Dashboard() {
                   dailyWage={job.dailyWage}
                   gender={job.gender}
                   numberOfWorkers={job.numberOfWorkers}
+                  createdAt={job.createdAt}
                 />
               </MDBox>
             </Grid>

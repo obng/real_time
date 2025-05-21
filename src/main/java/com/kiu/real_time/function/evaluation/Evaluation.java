@@ -2,7 +2,7 @@
 
 package com.kiu.real_time.function.evaluation;
 
-import com.kiu.real_time.person.Worker;
+import com.kiu.real_time.person.worker.Worker;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

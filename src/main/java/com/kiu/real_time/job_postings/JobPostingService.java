@@ -1,12 +1,10 @@
 package com.kiu.real_time.job_postings;
 
 import com.kiu.real_time.ResourceNotFoundException;
-import com.kiu.real_time.person.Owner;
-import com.kiu.real_time.person.OwnerRepository;
+import com.kiu.real_time.person.owner.Owner;
+import com.kiu.real_time.person.owner.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -14,10 +12,6 @@ public class JobPostingService {
 
     private final JobPostingRepository jobPostingRepository;
     private final OwnerRepository ownerRepository;
-
-    public List<JobPosting> getAllJobPostings() {
-        return jobPostingRepository.findAll();
-    }
 
     // ID로 단일 공고 조회
     public JobPosting getJobPostingById(Integer id) {

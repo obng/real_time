@@ -15,10 +15,11 @@ import java.util.List;
 public class JobPostingController {
 
     private final JobPostingService jobPostingService;
+    private final JobPostingRepository jobPostingRepository;
 
     @GetMapping
-    public ResponseEntity<List<JobPostingDto>> getAllJobPostings() {
-        List<JobPosting> postings = jobPostingService.getAllJobPostings();
+    public ResponseEntity<List<JobPostingDto>> getRecentJobPostings() {
+        List<JobPosting> postings = jobPostingRepository.findAllByOrderByCreatedAtDesc();
         List<JobPostingDto> dtos = postings.stream()
                 .map(jobPostingService::toDto)
                 .toList();
