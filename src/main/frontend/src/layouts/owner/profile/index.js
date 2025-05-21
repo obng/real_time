@@ -50,13 +50,13 @@ function Overview() {
             <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
               <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
               <ProfileInfoCard
-                title="profile information"
-                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+                title="프로필 정보"
+                description="안녕하세요 영천시 변두리에서 딸기 농장 운영하고 있는 고길동이라고 합니다. 전직 우주행성에서 소드마스터로 일한적이 있습니다, 많은 관심 부탁드릴게요."
                 info={{
-                  fullName: "Alec M. Thompson",
-                  mobile: "(44) 123 1234 123",
-                  email: "alecthompson@mail.com",
-                  location: "USA",
+                  성명: "길동 고",
+                  전화번호: "053 0303 1313",
+                  email: "gildong13@gmail.com",
+                  위치: "영천시",
                 }}
                 social={[
                   {
