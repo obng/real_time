@@ -13,16 +13,16 @@ public class OwnerController {
     private final OwnerService ownerService;
 
     // 전체 Owner 목록 페이지
-    @GetMapping("/owners")
+    @GetMapping("/owner")
     public String listOwners(Model model) {
         model.addAttribute("owners", ownerService.findAllOwners());
-        return "owners/list"; // src/main/resources/templates/owners/list.html
+        return "owner/list";
     }
 
     // 단일 Owner 상세 페이지
-    @GetMapping("/owners/{id}")
+    @GetMapping("/owner/1")
     public String ownerDetail(@PathVariable Long id, Model model) {
         ownerService.findOwnerById(id).ifPresent(owner -> model.addAttribute("owner", owner));
-        return "owners/detail"; // src/main/resources/templates/owners/detail.html
+        return "owner/detail";
     }
 }

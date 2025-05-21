@@ -1,6 +1,5 @@
 package com.kiu.real_time.function.evaluation;
 
-
 public class ScoreSummary {
     private String workerName;
     private int sincerityScore;
