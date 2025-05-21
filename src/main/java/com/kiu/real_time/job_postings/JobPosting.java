@@ -1,6 +1,6 @@
 package com.kiu.real_time.job_postings;
 
-import com.kiu.real_time.person.Owner;
+import com.kiu.real_time.person.owner.Owner;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

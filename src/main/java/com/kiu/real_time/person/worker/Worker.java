@@ -1,4 +1,4 @@
-package com.kiu.real_time.person;
+package com.kiu.real_time.person.worker;
 
 import com.kiu.real_time.function.application.Application;
 

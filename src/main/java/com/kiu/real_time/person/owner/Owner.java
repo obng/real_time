@@ -1,4 +1,4 @@
-package com.kiu.real_time.person;
+package com.kiu.real_time.person.owner;
 
 import com.kiu.real_time.job_postings.JobPosting;
 import jakarta.persistence.*;

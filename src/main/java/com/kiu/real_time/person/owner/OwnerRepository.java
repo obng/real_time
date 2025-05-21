@@ -1,4 +1,4 @@
-package com.kiu.real_time.person;
+package com.kiu.real_time.person.owner;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

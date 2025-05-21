@@ -2,8 +2,8 @@ package com.kiu.real_time.function.evaluation;
 
 //평가 등록 + 총점 조회
 
-import com.kiu.real_time.person.Worker;
-import com.kiu.real_time.person.WorkerRepository;
+import com.kiu.real_time.person.worker.Worker;
+import com.kiu.real_time.person.worker.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

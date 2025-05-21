@@ -21,6 +21,7 @@ function ComplexStatisticsCard({
   jobDescription,
   dailyWage,
   numberOfWorkers,
+  createdAt,
   onApply,
 }) {
   const [open, setOpen] = useState(false);
@@ -57,6 +58,12 @@ function ComplexStatisticsCard({
         <MDTypography component="p" variant="button" display="flex" fontWeight="bold">
           선발 인원 수 : {numberOfWorkers}
         </MDTypography>
+        {/* 작성일시 표시 */}
+        {createdAt && (
+          <MDTypography component="p" variant="caption" color="text" mt={0.5}>
+            작성일시: {new Date(createdAt).toLocaleString()}
+          </MDTypography>
+        )}
         <MDBox display="flex" justifyContent="flex-end" mt={2}>
           <MDButton color="info" onClick={handleOpen}>
             신청하기
@@ -87,6 +94,7 @@ ComplexStatisticsCard.defaultProps = {
   color: 'info',
   dailyWage: 'Not specified',
   onApply: null,
+  createdAt: null,
 };
 
 ComplexStatisticsCard.propTypes = {
@@ -104,6 +112,7 @@ ComplexStatisticsCard.propTypes = {
   jobDescription: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   dailyWage: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   numberOfWorkers: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
   onApply: PropTypes.func,
 };
 
