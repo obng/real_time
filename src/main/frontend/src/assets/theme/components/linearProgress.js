@@ -44,7 +44,7 @@ const linearProgress = {
       height: pxToRem(6),
       borderRadius: borderRadius.sm,
       position: "absolute",
-      transform: `translate(0, 0) !important`,
+      transform: "translate(0, 0) !important",
       transition: "width 0.6s ease !important",
     },
   },

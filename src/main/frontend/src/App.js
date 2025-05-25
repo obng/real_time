@@ -78,65 +78,61 @@ export default function App() {
 
   // 모든 라우트 한 번에 처리 (Choose + owner + worker)
   const getRoutes = () => {
-    const allRoutes = [
-      ...chooseRoute,
-      ...ownerRoutes,
-      ...workerRoutes,
-    ];
+    const allRoutes = [...chooseRoute, ...ownerRoutes, ...workerRoutes];
     return allRoutes.map((route) =>
-      route.route
-        ? <Route path={route.route} element={route.component} key={route.key || route.route} />
-        : null
+      route.route ? (
+        <Route path={route.route} element={route.component} key={route.key || route.route} />
+      ) : null
     );
   };
 
   const configsButton = (
     <MDBox
-      display='flex'
-      justifyContent='center'
-      alignItems='center'
-      width='3.25rem'
-      height='3.25rem'
-      bgColor='white'
-      shadow='sm'
-      borderRadius='50%'
-      position='fixed'
-      right='2rem'
-      bottom='2rem'
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      width="3.25rem"
+      height="3.25rem"
+      bgColor="white"
+      shadow="sm"
+      borderRadius="50%"
+      position="fixed"
+      right="2rem"
+      bottom="2rem"
       zIndex={99}
-      color='dark'
+      color="dark"
       sx={{ cursor: 'pointer' }}
       onClick={handleConfiguratorOpen}
     >
-      <Icon fontSize='small' color='inherit'>
+      <Icon fontSize="small" color="inherit">
         settings
       </Icon>
     </MDBox>
   );
 
   // Choose 페이지(역할 미선택)에서는 Sidenav을 숨기고 싶다면 layout === 'dashboard' && role !== null 조건 추가
-  const SidenavComponent = layout === 'dashboard' && role ? (
-    <>
-      <Sidenav
-        color={sidenavColor}
-        brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-        brandName='Material Dashboard 2'
-        routes={sidenavRoutes}
-        onMouseEnter={handleOnMouseEnter}
-        onMouseLeave={handleOnMouseLeave}
-      />
+  const SidenavComponent =
+    layout === 'dashboard' && role ? (
+      <>
+        <Sidenav
+          color={sidenavColor}
+          brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+          brandName="Material Dashboard 2"
+          routes={sidenavRoutes}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
+        />
+        <Configurator />
+        {configsButton}
+      </>
+    ) : layout === 'dashboard' ? (
       <Configurator />
-      {configsButton}
-    </>
-  ) : layout === 'dashboard' ? (
-    <Configurator />
-  ) : null;
+    ) : null;
 
   if (direction === 'rtl' && !rtlCache) return null;
 
-  const themeMode = direction === 'rtl'
-    ? (darkMode ? themeDarkRTL : themeRTL)
-    : (darkMode ? themeDark : theme);
+  const themeMode =
+    direction === 'rtl' ? (darkMode ? themeDarkRTL : themeRTL) : darkMode ? themeDark : theme;
 
   return direction === 'rtl' ? (
     <CacheProvider value={rtlCache}>
@@ -144,9 +140,9 @@ export default function App() {
         <CssBaseline />
         {SidenavComponent}
         <Routes>
-          <Route path='/' element={<Navigate to='/choose' />} />
+          <Route path="/" element={<Navigate to="/choose" />} />
           {getRoutes()}
-          <Route path='*' element={<Navigate to='/choose' />} />
+          <Route path="*" element={<Navigate to="/choose" />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -155,9 +151,9 @@ export default function App() {
       <CssBaseline />
       {SidenavComponent}
       <Routes>
-        <Route path='/' element={<Navigate to='/choose' />} />
+        <Route path="/" element={<Navigate to="/choose" />} />
         {getRoutes()}
-        <Route path='*' element={<Navigate to='/choose' />} />
+        <Route path="*" element={<Navigate to="/choose" />} />
       </Routes>
     </ThemeProvider>
   );

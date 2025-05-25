@@ -99,7 +99,7 @@ function DefaultNavbar({ transparent, light, action }) {
           backgroundColor: transparent
             ? transparentColor.main
             : rgba(darkMode ? background.sidenav : white.main, 0.8),
-          backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
+          backdropFilter: transparent ? "none" : "saturate(200%) blur(30px)",
         })}
       >
         <MDBox

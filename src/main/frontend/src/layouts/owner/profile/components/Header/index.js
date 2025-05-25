@@ -29,8 +29,8 @@ function Header({ children }) {
         ? setTabsOrientation('vertical')
         : setTabsOrientation('horizontal');
     }
-  
-  window.addEventListener('resize', handleTabsOrientation);
+
+    window.addEventListener('resize', handleTabsOrientation);
 
     // Call the handleTabsOrientation function to set the state with the initial value.
     handleTabsOrientation();

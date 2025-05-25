@@ -37,7 +37,7 @@ const radio = {
 
       "&:after": {
         transition: "opacity 250ms ease-in-out",
-        content: `""`,
+        content: '""',
         position: "absolute",
         width: pxToRem(14),
         height: pxToRem(14),

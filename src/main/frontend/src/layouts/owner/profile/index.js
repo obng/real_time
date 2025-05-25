@@ -20,7 +20,7 @@ function Overview() {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    fetch('/api/owner/1')
+    fetch('/api/owner')
       .then((res) => res.json())
       .then((data) => {
         setProfile({

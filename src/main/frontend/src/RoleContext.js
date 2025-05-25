@@ -5,11 +5,7 @@ const RoleContext = createContext();
 
 export function RoleProvider({ children }) {
   const [role, setRole] = useState(null); // 'owner' 또는 'worker'
-  return (
-    <RoleContext.Provider value={{ role, setRole }}>
-      {children}
-    </RoleContext.Provider>
-  );
+  return <RoleContext.Provider value={{ role, setRole }}>{children}</RoleContext.Provider>;
 }
 
 export function useRole() {

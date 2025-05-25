@@ -24,9 +24,8 @@ public class Owner {
     @Column(name = "contact_number", length = 20)
     private String contactNumber;
 
-    private BigDecimal rating; // 평가 점수
+    private BigDecimal rating;
 
-    // 사장님이 작성한 공고글 리스트
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<JobPosting> jobs;
 }
