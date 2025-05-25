@@ -18,9 +18,11 @@ public class ApplicationController {
     ) {
         try {
             Application application = applicationService.apply(workerId, jobPostingId);
-            return ResponseEntity.ok(application);
+            return ResponseEntity.ok(application); // 지원 성공
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage()); // 지원 실패(예: 중복 지원 등)
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("서버 오류가 발생했습니다."); // 기타 서버 오류
         }
     }
 }

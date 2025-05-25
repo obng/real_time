@@ -1,28 +1,32 @@
 package com.kiu.real_time.person.owner;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-@Controller
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/owner")
 @RequiredArgsConstructor
 public class OwnerController {
 
     private final OwnerService ownerService;
 
-    // 전체 Owner 목록 페이지
-    @GetMapping("/owner")
-    public String listOwners(Model model) {
-        model.addAttribute("owners", ownerService.findAllOwners());
-        return "owner/list";
+    // 전체 Owner 목록 조회 (DTO 변환)
+    @GetMapping
+    public List<OwnerDto> listOwners() {
+        return ownerService.findAllOwners().stream()
+                .map(OwnerDto::from)
+                .toList();
     }
 
-    // 단일 Owner 상세 페이지
-    @GetMapping("/owner/1")
-    public String ownerDetail(@PathVariable Long id, Model model) {
-        ownerService.findOwnerById(id).ifPresent(owner -> model.addAttribute("owner", owner));
-        return "owner/detail";
+    // 단일 Owner 상세 조회 (DTO 변환)
+    @GetMapping("/{id}")
+    public OwnerDto ownerDetail(@PathVariable Long id) {
+        return ownerService.findOwnerById(id)
+                .map(OwnerDto::from)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
