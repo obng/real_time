@@ -30,7 +30,7 @@ function Dashboard() {
           setJobPostings([]);
         }
       })
-      .catch((error) => {ss
+      .catch((error) => {
         console.error('Error fetching job postings:', error);
       });
   }, []);
