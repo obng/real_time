@@ -5,11 +5,14 @@ import Choose from 'layouts/choose';
 import OwnerDashboard from 'layouts/owner/dashboard';
 import OwnerNotifications from 'layouts/owner/notifications';
 import OwnerProfile from 'layouts/owner/profile';
+
 // 알바 루트
 import WorkerDashboard from 'layouts/worker/dashboard';
 import WorkerNotifications from 'layouts/worker/notifications';
 import WorkerProfile from 'layouts/worker/profile';
 
+// 평가
+import EvaluationPage from 'layouts/evaluation/EvaluationPage';
 // @mui icons
 import Icon from '@mui/material/Icon';
 
@@ -40,6 +43,8 @@ export const ownerRoutes = [
     route: '/owner/notifications',
     component: <OwnerNotifications />,
   },
+
+
   {
     type: 'collapse',
     name: '나의 프로필',
@@ -47,6 +52,14 @@ export const ownerRoutes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: '/owner/profile',
     component: <OwnerProfile />,
+  },
+  {
+    type: 'collapse',
+    name: '알바 평가',
+    key: 'owner-evaluation',
+    icon: <Icon fontSize="small">star</Icon>,
+    route: '/evaluation',
+    component: <EvaluationPage />,
   },
 ];
 
@@ -75,5 +88,14 @@ export const workerRoutes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: '/worker/profile',
     component: <WorkerProfile />,
+  },
+
+  {
+    type: 'collapse',
+    name: '사장 평가',
+    key: 'worker-evaluation',
+    icon: <Icon fontSize="small">star</Icon>,
+    route: '/evaluation',
+    component: <EvaluationPage />,
   },
 ];
