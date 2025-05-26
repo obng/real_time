@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 // @mui material components
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDSnackbar from "components/MDSnackbar";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
+import MDSnackbar from 'components/MDSnackbar';
 
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
+import Footer from 'examples/Footer';
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
@@ -24,7 +24,7 @@ function Notifications() {
     async function fetchNotifications() {
       try {
         const res = await fetch(`/api/notifications/owner/${ownerId}`);
-        if (!res.ok) throw new Error("Failed to fetch notifications");
+        if (!res.ok) throw new Error('Failed to fetch notifications');
 
         const data = await res.json();
         setNotifications(data);
@@ -37,11 +37,11 @@ function Notifications() {
           setOpenNotification(data[data.length - 1]);
         }
       } catch (error) {
-        console.error("알림을 불러오는 중 오류 발생:", error);
+        console.error('알림을 불러오는 중 오류 발생:', error);
         setOpenNotification({
-          id: "error",
-          type: "error",
-          message: "알림을 불러오는 데 실패했습니다.",
+          id: 'error',
+          type: 'error',
+          message: '알림을 불러오는 데 실패했습니다.',
           dateTime: new Date().toISOString(),
         });
       }
@@ -60,24 +60,24 @@ function Notifications() {
   const renderSnackbar = (notification) => {
     if (!notification) return null;
 
-    let color = "info";
-    let icon = "notifications";
+    let color = 'info';
+    let icon = 'notifications';
     switch (notification.type) {
-      case "success":
-        color = "success";
-        icon = "check_circle";
+      case 'success':
+        color = 'success';
+        icon = 'check_circle';
         break;
-      case "warning":
-        color = "warning";
-        icon = "warning";
+      case 'warning':
+        color = 'warning';
+        icon = 'warning';
         break;
-      case "error":
-        color = "error";
-        icon = "error";
+      case 'error':
+        color = 'error';
+        icon = 'error';
         break;
       default:
-        color = "info";
-        icon = "notifications";
+        color = 'info';
+        icon = 'notifications';
     }
 
     return (
@@ -115,7 +115,7 @@ function Notifications() {
                     <MDTypography
                       key={n.id}
                       variant="body1"
-                      color={n.read ? "text.disabled" : "text.primary"}
+                      color={n.read ? 'text.disabled' : 'text.primary'}
                       sx={{ mb: 1 }}
                     >
                       [{formatDate(n.dateTime)}] {n.message}

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'; // prop-types 추가
 import { OwnerEvaluate, WorkerEvaluate } from './EvaluationForm/components';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -63,5 +64,13 @@ function EvaluationPage({ userId }) {
     </Container>
   );
 }
+
+// prop-types로 userId의 타입을 명시
+EvaluationPage.propTypes = {
+  userId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+};
 
 export default EvaluationPage;

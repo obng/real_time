@@ -37,7 +37,7 @@ export const ownerRoutes = [
   },
   {
     type: 'collapse',
-    name: '알림림',
+    name: '알림',
     key: 'owner-notifications',
     icon: <Icon fontSize="small">notifications</Icon>,
     route: '/owner/notifications',

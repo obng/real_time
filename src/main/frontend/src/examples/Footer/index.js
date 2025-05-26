@@ -1,9 +1,9 @@
 // @mui material components
-import Link from "@mui/material/Link";
+import Link from '@mui/material/Link';
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
+import MDBox from 'components/MDBox';
 // Material Dashboard 2 React base styles
-import typography from "assets/theme/base/typography";
+import typography from 'assets/theme/base/typography';
 
 function Footer() {
   const { size } = typography;

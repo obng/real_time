@@ -25,6 +25,8 @@ function ComplexStatisticsCard({
   onApply,
 }) {
   const [open, setOpen] = useState(false);
+  const [applied, setApplied] = useState(false); // 지원 완료 상태
+  const [loading, setLoading] = useState(false); // 지원 중 로딩
 
   // '신청하기' 버튼 클릭 시 모달 오픈
   const handleOpen = () => setOpen(true);
@@ -32,10 +34,19 @@ function ComplexStatisticsCard({
   const handleClose = () => setOpen(false);
 
   // 모달에서 '확인' 클릭 시
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    setLoading(true);
+    try {
+      if (onApply) {
+        await onApply(); // 비동기 지원 처리
+      }
+      setApplied(true);
+      window.alert('신청이 완료되었습니다!');
+    } catch (e) {
+      window.alert('신청에 실패했습니다.');
+    }
+    setLoading(false);
     setOpen(false);
-    if (onApply) onApply();
-    window.alert('신청이 완료되었습니다!');
   };
 
   return (
@@ -43,12 +54,14 @@ function ComplexStatisticsCard({
       {/* 상부 */}
       <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
         <MDBox textAlign="left" lineHeight={1.25} width="100%">
-          <MDTypography variant="button" fontWeight="light" color="text">
+          <MDTypography variant="button" fontWeight="light" color="text" >
             {workLocation}
           </MDTypography>
           <MDTypography variant="h5">{jobDescription}</MDTypography>
           <MDTypography variant="h5">
-            {typeof dailyWage === 'number' ? `${dailyWage.toLocaleString()}원` : dailyWage}
+            {typeof dailyWage === 'number'
+              ? `${dailyWage.toLocaleString()}원`
+              : dailyWage}
           </MDTypography>
         </MDBox>
       </MDBox>
@@ -65,8 +78,12 @@ function ComplexStatisticsCard({
           </MDTypography>
         )}
         <MDBox display="flex" justifyContent="flex-end" mt={2}>
-          <MDButton color="info" onClick={handleOpen}>
-            신청하기
+          <MDButton
+            color={applied ? 'success' : 'info'}
+            onClick={handleOpen}
+            disabled={applied || loading}
+          >
+            {applied ? '신청 완료' : loading ? '신청 중...' : '신청하기'}
           </MDButton>
         </MDBox>
       </MDBox>
@@ -78,11 +95,11 @@ function ComplexStatisticsCard({
           <MDTypography variant="body1">해당 근무에 지원하시겠습니까?</MDTypography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary">
+          <Button onClick={handleClose} color="secondary" disabled={loading}>
             취소
           </Button>
-          <Button onClick={handleConfirm} color="primary" autoFocus>
-            확인
+          <Button onClick={handleConfirm} color="primary" autoFocus disabled={loading}>
+            {loading ? '신청 중...' : '확인'}
           </Button>
         </DialogActions>
       </Dialog>
