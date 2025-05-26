@@ -12,12 +12,10 @@ public class OwnerService {
 
     private final OwnerRepository ownerRepository;
 
-    // 전체 Owner 조회
     public List<Owner> findAllOwners() {
         return ownerRepository.findAll();
     }
 
-    // ID로 Owner 조회
     public Optional<Owner> findOwnerById(Long id) {
         return ownerRepository.findById(id);
     }

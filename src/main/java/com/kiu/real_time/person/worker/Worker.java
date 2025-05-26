@@ -27,8 +27,8 @@ public class Worker {
     @Column
     private Integer age;
 
-    @Column(name = "contact_number", length = 20)
-    private String contactNumber;
+    @Column(name = "phone_number", length = 20)
+    private String phoneNumber;
     
     private BigDecimal rating; // 평가 점수
 

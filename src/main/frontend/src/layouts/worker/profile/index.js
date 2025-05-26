@@ -14,8 +14,23 @@ import ProfileInfoCard from 'examples/Cards/InfoCards/ProfileInfoCard';
 
 // Overview page components
 import Header from 'layouts/worker/profile/components/Header';
+import { useEffect, useState } from 'react';
 
 function Overview() {
+const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/worker/1')
+      .then((res) => res.json())
+      .then((data) => {
+        setProfile({
+          성명: data.name,
+          전화번호: data.phoneNumber,
+          평점: data.rating,
+        });
+      });
+  }, []);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -25,23 +40,26 @@ function Overview() {
           <Grid container spacing={1}>
             <Grid item xs={12} md={6} xl={4} sx={{ display: 'flex' }}>
               <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
-              <ProfileInfoCard
-                title="프로필 정보"
-                info={{
-                  성명: '길동 고',
-                  전화번호: '053 0303 1313',
-                  위치: '영천시',
-                }}
-                action={{ route: '', tooltip: 'Edit Profile' }}
-                shadow={false}
-              />
+              {profile && (
+                <ProfileInfoCard
+                  title="프로필 정보"
+                  info={profile}
+                  action={{ route: '', tooltip: 'Edit Profile' }}
+                  shadow={false}
+                />
+              )}
             </Grid>
           </Grid>
         </MDBox>
         <MDBox pt={2} px={2} lineHeight={1.25}>
           <MDTypography variant="h6" fontWeight="medium">
-            지원한 작업들
+            Projects
           </MDTypography>
+          <MDBox mb={1}>
+            <MDTypography variant="button" color="text">
+              Architects design houses
+            </MDTypography>
+          </MDBox>
         </MDBox>
         {/* 밑에는 지원한 작업들 데이터 불러오는 파일 */}
       </Header>

@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/owner")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class OwnerController {
 
     private final OwnerService ownerService;
@@ -26,7 +25,7 @@ public class OwnerController {
 
     // 단일 Owner 상세 조회
     @GetMapping("/{id}")
-    public ResponseEntity<OwnerDto> getOwnerById(@PathVariable Long id) {
+    public ResponseEntity<OwnerDto> getOwnerById(@PathVariable("id") Long id) {
         return ownerService.findOwnerById(id)
                 .map(owner -> ResponseEntity.ok(OwnerDto.from(owner)))
                 .orElseThrow(() -> new ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "해당 Owner를 찾을 수 없습니다."));

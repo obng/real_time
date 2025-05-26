@@ -21,8 +21,8 @@ public class Owner {
     @Column(length = 50)
     private String name;
 
-    @Column(name = "contact_number", length = 20)
-    private String contactNumber;
+    @Column(name = "phone_number", length = 20)
+    private String phoneNumber;
 
     private BigDecimal rating;
 

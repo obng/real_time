@@ -20,12 +20,12 @@ function Overview() {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    fetch('/api/owner')
+    fetch('/api/owner/1')
       .then((res) => res.json())
       .then((data) => {
         setProfile({
           성명: data.name,
-          전화번호: data.phone,
+          전화번호: data.phoneNumber,
           평점: data.rating,
         });
       });
