@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-// @mui material components
+// @mui/material components
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Dialog from '@mui/material/Dialog';
@@ -16,34 +16,57 @@ import MDButton from 'components/MDButton';
 
 import { useState } from 'react';
 
+// 지원하기 API 함수 (응답을 항상 text로 받고 JSON 파싱 시도)
+async function applyToJob(workerId, jobPostingId) {
+  const response = await fetch(
+    `/api/applications?workerId=${workerId}&jobPostingId=${jobPostingId}`,
+    { method: 'POST' }
+  );
+  const text = await response.text();
+
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch (err) {
+    data = null;
+  }
+
+  if (!response.ok) {
+    if (data && data.message) {
+      throw new Error(data.message);
+    }
+    throw new Error(text || '신청 실패');
+  }
+  return data;
+}
+
 function ComplexStatisticsCard({
   workLocation,
   jobDescription,
   dailyWage,
   numberOfWorkers,
   createdAt,
-  onApply,
+  jobPostingId,     // 공고글 ID (props로 전달받음)
+  workerId = 1,     // 알바생 ID (props로 전달받음)
 }) {
   const [open, setOpen] = useState(false);
-  const [applied, setApplied] = useState(false); // 지원 완료 상태
-  const [loading, setLoading] = useState(false); // 지원 중 로딩
+  const [applied, setApplied] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // '신청하기' 버튼 클릭 시 모달 오픈
   const handleOpen = () => setOpen(true);
   // 모달 닫기
   const handleClose = () => setOpen(false);
 
-  // 모달에서 '확인' 클릭 시
-  const handleConfirm = async () => {
+  // 모달에서 '확인' 클릭 시 지원 API 호출
+  const handleApply = async () => {
     setLoading(true);
     try {
-      if (onApply) {
-        await onApply(); // 비동기 지원 처리
-      }
+      await applyToJob(workerId, jobPostingId); // 여기서 jobPostingId를 사용!
       setApplied(true);
       window.alert('신청이 완료되었습니다!');
     } catch (e) {
-      window.alert('신청에 실패했습니다.');
+      window.alert('신청에 실패했습니다.\n' + e.message);
     }
     setLoading(false);
     setOpen(false);
@@ -54,7 +77,7 @@ function ComplexStatisticsCard({
       {/* 상부 */}
       <MDBox display="flex" justifyContent="space-between" pt={1} px={2}>
         <MDBox textAlign="left" lineHeight={1.25} width="100%">
-          <MDTypography variant="button" fontWeight="light" color="text" >
+          <MDTypography variant="button" fontWeight="light" color="text">
             {workLocation}
           </MDTypography>
           <MDTypography variant="h5">{jobDescription}</MDTypography>
@@ -98,7 +121,7 @@ function ComplexStatisticsCard({
           <Button onClick={handleClose} color="secondary" disabled={loading}>
             취소
           </Button>
-          <Button onClick={handleConfirm} color="primary" autoFocus disabled={loading}>
+          <Button onClick={handleApply} color="primary" autoFocus disabled={loading}>
             {loading ? '신청 중...' : '확인'}
           </Button>
         </DialogActions>
@@ -110,8 +133,8 @@ function ComplexStatisticsCard({
 ComplexStatisticsCard.defaultProps = {
   color: 'info',
   dailyWage: 'Not specified',
-  onApply: null,
   createdAt: null,
+  workerId: 1, // 예시: 하드코딩
 };
 
 ComplexStatisticsCard.propTypes = {
@@ -130,7 +153,8 @@ ComplexStatisticsCard.propTypes = {
   dailyWage: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   numberOfWorkers: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   createdAt: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-  onApply: PropTypes.func,
+  jobPostingId: PropTypes.number.isRequired,
+  workerId: PropTypes.number,
 };
 
 export default ComplexStatisticsCard;
