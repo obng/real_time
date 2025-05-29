@@ -20,7 +20,7 @@ public class Application {
     private LocalDateTime appliedAt;
 
     @Setter
-    private String status; // 예: "대기", "승인", "거절" 등
+    private String status; // "대기", "승인", "거절" 등
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,7 +30,11 @@ public class Application {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_posting_id", nullable = false)
-    private JobPosting jobPosting; // 지원한 공고글
+    private JobPosting jobPosting;
+
+    public static final String STATUS_PENDING = "대기";
+    public static final String STATUS_CONFIRMED = "승인";
+    public static final String STATUS_REJECTED = "거절";
 
     public Application() {}
 

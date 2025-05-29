@@ -1,5 +1,11 @@
+import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
@@ -7,12 +13,14 @@ import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import Footer from 'examples/Footer';
 import ProfileInfoCard from 'examples/Cards/InfoCards/ProfileInfoCard';
 import Header from 'layouts/owner/profile/components/Header';
-import { useEffect, useState } from 'react';
 
 function Overview() {
   const [profile, setProfile] = useState(null);
   const [jobPostings, setJobPostings] = useState([]);
-  const ownerId = 1; // 사장님 id (로그인 정보에서 받아올 수도 있음)
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedWorker, setSelectedWorker] = useState(null);
+  const [completedApplications, setCompletedApplications] = useState([]); // 근무 완료된 applicationId 목록
+  const ownerId = 1;
 
   useEffect(() => {
     fetch(`/api/owner/${ownerId}`)
@@ -26,6 +34,74 @@ function Overview() {
         setJobPostings(data.jobPostings || []);
       });
   }, [ownerId]);
+
+  // 근무 완료하기 버튼 클릭
+  const handleWorkComplete = (worker) => {
+    setSelectedWorker(worker);
+    setDialogOpen(true);
+  };
+
+  // 평가 페이지로 이동 + 버튼 "마감"으로 변경
+  const goToEvaluation = () => {
+    setDialogOpen(false);
+    setCompletedApplications((prev) => [...prev, selectedWorker.applicationId]);
+    // 평가 페이지로 이동
+    window.location.href = `/owner/evaluate/${selectedWorker.id}?jobPostingId=${selectedWorker.jobPostingId}`;
+  };
+
+  // 지원 수락 함수
+  const acceptApplication = async (applicationId) => {
+    if (!window.confirm('이 지원자를 수락하시겠습니까?')) return;
+    await fetch(`/api/owner/applications/${applicationId}/accept`, { method: 'POST' });
+    window.location.reload();
+  };
+
+  // 버튼 상태 및 클릭 핸들러 결정 함수
+  const getButtonProps = (worker, posting) => {
+    if (worker.status === '대기') {
+      return {
+        label: '수락',
+        color: '#1976d2',
+        onClick: () => acceptApplication(worker.applicationId),
+        disabled: false,
+      };
+    }
+    if (worker.status === '승인') {
+      if (completedApplications.includes(worker.applicationId)) {
+        return {
+          label: '마감',
+          color: '#bdbdbd',
+          onClick: null,
+          disabled: true,
+        };
+      }
+      return {
+        label: '근무 완료하기',
+        color: '#ff9800',
+        onClick: () =>
+          handleWorkComplete({
+            ...worker,
+            jobPostingId: posting.jobPostingId,
+          }),
+        disabled: false,
+      };
+    }
+    if (worker.status === '거절') {
+      return {
+        label: '거절됨',
+        color: '#e53935',
+        onClick: null,
+        disabled: true,
+      };
+    }
+    // 기타 예외
+    return {
+      label: worker.status,
+      color: '#bdbdbd',
+      onClick: null,
+      disabled: true,
+    };
+  };
 
   return (
     <DashboardLayout>
@@ -60,21 +136,58 @@ function Overview() {
                 <MDTypography variant="subtitle1" fontWeight="bold">
                   [{posting.jobPostingId}] {posting.jobDescription} ({posting.workLocation})
                 </MDTypography>
-                <ul style={{ marginTop: 8 }}>
+                <ul style={{ marginTop: 8, listStyleType: 'none', paddingLeft: 0 }}>
                   {posting.applicants.length === 0 ? (
                     <li>아직 지원자가 없습니다.</li>
                   ) : (
-                    posting.applicants.map((worker) => (
-                      <li key={worker.id}>
-                        이름: {worker.name} / 연락처: {worker.phoneNumber}
-                      </li>
-                    ))
+                    posting.applicants.map((worker, idx) => {
+                      const btnProps = getButtonProps(worker, posting);
+                      return (
+                        <li key={worker.applicationId} style={{ marginBottom: 8 }}>
+                          {idx + 1}. 이름: {worker.name} / 연락처: {worker.phoneNumber}
+                          <button
+                            onClick={btnProps.onClick}
+                            disabled={btnProps.disabled}
+                            style={{
+                              marginLeft: 10,
+                              background: btnProps.color,
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: 4,
+                              padding: '4px 12px',
+                              cursor: btnProps.disabled ? 'default' : 'pointer',
+                              minWidth: '110px',
+                            }}
+                          >
+                            {btnProps.label}
+                          </button>
+                        </li>
+                      );
+                    })
                   )}
                 </ul>
               </MDBox>
             ))
           )}
         </MDBox>
+        {/* 근무 완료 → 평가 팝업 */}
+        <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+          <DialogTitle>평가 바로가기</DialogTitle>
+          <DialogContent>
+            <MDTypography variant="body1">
+              근무가 완료되었습니다.<br />
+              해당 알바생을 평가하시겠습니까?
+            </MDTypography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDialogOpen(false)} color="secondary">
+              취소
+            </Button>
+            <Button onClick={goToEvaluation} color="primary" autoFocus>
+              확인
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Header>
       <Footer />
     </DashboardLayout>

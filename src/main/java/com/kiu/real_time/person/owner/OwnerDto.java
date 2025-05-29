@@ -15,7 +15,7 @@ public class OwnerDto {
     private String name;
     private String phoneNumber;
     private BigDecimal rating;
-    private List<JobPostingWithApplicants> jobPostings; // 추가
+    private List<JobPostingWithApplicants> jobPostings;
 
     @Data
     @AllArgsConstructor
@@ -34,11 +34,11 @@ public class OwnerDto {
         private Long id;
         private String name;
         private String phoneNumber;
+        private String status; // "대기", "승인", "거절"
+        private Long applicationId; // 수락/거절 처리용
     }
 
-    // Owner → OwnerDto 변환 메서드
-    public static OwnerDto from(Owner owner,
-                                List<JobPostingWithApplicants> jobPostings) {
+    public static OwnerDto from(Owner owner, List<JobPostingWithApplicants> jobPostings) {
         return new OwnerDto(
                 owner.getId(),
                 owner.getName(),

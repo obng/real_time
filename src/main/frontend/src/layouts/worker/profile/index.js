@@ -1,26 +1,21 @@
-// @mui material components
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
-
-// Material Dashboard 2 React components
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
-
-// Material Dashboard 2 React example components
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import Footer from 'examples/Footer';
 import ProfileInfoCard from 'examples/Cards/InfoCards/ProfileInfoCard';
-
-// Overview page components
 import Header from 'layouts/worker/profile/components/Header';
 import { useEffect, useState } from 'react';
 
 function Overview() {
-const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [appliedJobs, setAppliedJobs] = useState([]);
+  const workerId = 1; // 실제로는 로그인 정보에서 받아야 함
 
   useEffect(() => {
-    fetch('/api/worker/1')
+    fetch(`/api/worker/${workerId}`)
       .then((res) => res.json())
       .then((data) => {
         setProfile({
@@ -28,8 +23,9 @@ const [profile, setProfile] = useState(null);
           전화번호: data.phoneNumber,
           평점: data.rating,
         });
+        setAppliedJobs(data.appliedJobs || []);
       });
-  }, []);
+  }, [workerId]);
 
   return (
     <DashboardLayout>
@@ -51,17 +47,32 @@ const [profile, setProfile] = useState(null);
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox pt={2} px={2} lineHeight={1.25}>
-          <MDTypography variant="h6" fontWeight="medium">
-            Projects
+        {/* 내가 지원한 근무 리스트 */}
+        <MDBox mt={4}>
+          <MDTypography variant="h6" fontWeight="medium" mb={2}>
+            내가 지원한 근무
           </MDTypography>
-          <MDBox mb={1}>
-            <MDTypography variant="button" color="text">
-              Architects design houses
-            </MDTypography>
-          </MDBox>
+          {appliedJobs.length === 0 ? (
+            <MDTypography variant="body2">아직 지원한 근무가 없습니다.</MDTypography>
+          ) : (
+            <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+              {appliedJobs.map((job, idx) => (
+                <li key={job.applicationId} style={{ marginBottom: 16 }}>
+                  <MDTypography variant="body1" fontWeight="bold">
+                    {idx + 1}. {job.jobDescription} ({job.workLocation})
+                  </MDTypography>
+                  <MDTypography variant="body2" color="text">
+                    지원일: {job.appliedAt ? new Date(job.appliedAt).toLocaleString() : '-'}
+                    <br />
+                    사장님: {job.ownerName} / {job.ownerPhone}
+                    <br />
+                    상태: {job.status}
+                  </MDTypography>
+                </li>
+              ))}
+            </ul>
+          )}
         </MDBox>
-        {/* 밑에는 지원한 작업들 데이터 불러오는 파일 */}
       </Header>
       <Footer />
     </DashboardLayout>
