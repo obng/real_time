@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface JobPostingRepository extends JpaRepository<JobPosting, Integer> {
     List<JobPosting> findAllByOrderByCreatedAtDesc();
+    List<JobPosting> findByOwnerId(Long ownerId);
 }
