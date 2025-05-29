@@ -13,7 +13,7 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
-    "quotes": ["error", "single"], // 또는 "double"
+    "quotes": "off", // 또는 "double"
     "jsx-quotes": ["error", "prefer-double"], // JSX에서는 보통 double
     "prettier/prettier": "off",
     "react/display-name": "off",
