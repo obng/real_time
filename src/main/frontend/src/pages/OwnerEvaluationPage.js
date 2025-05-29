@@ -29,10 +29,12 @@ export default function OwnerEvaluationPage() {
       body: JSON.stringify(form),
     });
     alert('평가가 등록되었습니다!');
-    fetch(`/api/evaluation/summary/${ownerId}`)
-      .then((res) => res.json())
-      .then(setSummary);
-  };
+    window.location.href = 'http://localhost:3001/owner/profile';
+    };
+    //fetch(`/api/evaluation/summary/${ownerId}`)
+      //.then((res) => res.json())
+      //.then(setSummary);
+
 
   return (
     <Box

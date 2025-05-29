@@ -44,6 +44,13 @@ export const ownerRoutes = [
     route: '/owner/notifications',
     component: <OwnerNotifications />,
   },
+  {
+    type: 'collapse',
+    name: '사장 평가',
+    key: 'owner-notifications',
+    route: '/pages/OwnerEvaluation',
+    component: <OwnerEvaluationPage />,
+  },
 
 
   {
@@ -82,4 +89,11 @@ export const workerRoutes = [
     route: '/worker/profile',
     component: <WorkerProfile />,
   },
+  {
+      type: 'collapse',
+      name: '알바 평가',
+      key: 'owner-notifications',
+      route: '/pages/WorkerEvaluation',
+      component: <WorkerEvaluationPage />,
+    }
 ];

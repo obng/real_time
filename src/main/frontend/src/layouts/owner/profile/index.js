@@ -67,7 +67,7 @@ function Overview() {
     setDialogOpen(false);
     setCompletedApplications((prev) => [...prev, selectedWorker.applicationId]);
     // 평가 페이지로 이동
-    window.location.href = `/owner/evaluate/${selectedWorker.id}?jobPostingId=${selectedWorker.jobPostingId}`;
+    window.location.href = `/pages/OwnerEvaluation?jobPostingId=${selectedWorker.jobPostingId}`;
   };
 
   // 지원 수락 함수
