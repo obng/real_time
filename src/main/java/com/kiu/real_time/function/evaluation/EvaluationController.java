@@ -63,9 +63,9 @@ public class EvaluationController {
 
         if (score > 0) { // 좋은 점수일 때
             if (type.equals("sincerity")) {
-                score *= 0.1;  // 성실은 천천히 증가
+                score *= 0.5;  // 성실은 천천히 증가
             } else if (type.equals("late") || type.equals("absent")) {
-                score *= 0.2;  // 지각, 도망은 적당히 증가
+                score *= 0.25;  // 지각, 도망은 적당히 증가
             }
         } else {  // 나쁜 점수일 때
             if (type.equals("sincerity")) {

@@ -44,13 +44,6 @@ export const ownerRoutes = [
     route: '/owner/notifications',
     component: <OwnerNotifications />,
   },
-  {
-    type: 'collapse',
-    name: '사장 평가',
-    key: 'owner-notifications',
-    route: '/pages/OwnerEvaluation',
-    component: <OwnerEvaluationPage />,
-  },
 
 
   {
@@ -61,6 +54,12 @@ export const ownerRoutes = [
     route: '/owner/profile',
     component: <OwnerProfile />,
   },
+  {
+      name: '사장 평가',
+      key: 'owner-notifications',
+      route: '/pages/OwnerEvaluation',
+      component: <OwnerEvaluationPage />,
+    },
 ];
 
 // 알바생 메뉴
@@ -90,10 +89,10 @@ export const workerRoutes = [
     component: <WorkerProfile />,
   },
   {
-      type: 'collapse',
       name: '알바 평가',
-      key: 'owner-notifications',
+      key: 'worker-notifications',
       route: '/pages/WorkerEvaluation',
       component: <WorkerEvaluationPage />,
     }
 ];
+

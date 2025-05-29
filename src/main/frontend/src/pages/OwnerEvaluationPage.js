@@ -12,9 +12,12 @@ export default function OwnerEvaluationPage() {
   const [summary, setSummary] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/evaluation/summary/${ownerId}`)
+    fetch(`/api/owner/summary/${ownerId}`)
       .then((res) => res.json())
-      .then(setSummary);
+      .then(setSummary)
+      .catch((err) => {
+        console.error('점수 요약 불러오기 실패:', err);
+      });
   }, [ownerId]);
 
   const handleStar = (name, value) => {
@@ -31,9 +34,10 @@ export default function OwnerEvaluationPage() {
     alert('평가가 등록되었습니다!');
     window.location.href = 'http://localhost:3001/owner/profile';
     };
-    //fetch(`/api/evaluation/summary/${ownerId}`)
-      //.then((res) => res.json())
+   // fetch(`/api/evaluation/summary/${ownerId}`)
+     // .then((res) => res.json())
       //.then(setSummary);
+    //};
 
 
   return (
