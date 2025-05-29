@@ -2,27 +2,21 @@ package com.kiu.real_time.function.evaluation;
 
 public class EvaluationRequest {
 
-    private Long workerId;
+
     private int sincerityDelta;
     private int lateDelta;
     private int absentDelta;
 
     public EvaluationRequest() {}
 
-    public EvaluationRequest(Long workerId, int sincerityDelta, int lateDelta, int absentDelta) {
-        this.workerId = workerId;
+    public EvaluationRequest( int sincerityDelta, int lateDelta, int absentDelta) {
+
         this.sincerityDelta = sincerityDelta;
         this.lateDelta = lateDelta;
         this.absentDelta = absentDelta;
     }
 
-    public Long getWorkerId() {
-        return workerId;
-    }
 
-    public void setWorkerId(Long workerId) {
-        this.workerId = workerId;
-    }
 
     public int getSincerityDelta() {
         return sincerityDelta;

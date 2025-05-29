@@ -18,26 +18,23 @@ public class EvaluationController {
     @Autowired
     private WorkerRepository workerRepository;
 
-    // 기존
-    // @PostMapping("/evaluate/{workerId}")
-    // public Evaluation evaluate(@PathVariable Long workerId, @RequestBody EvaluationRequest req) {
-
-    // 수정
-    @PostMapping("/evaluate")
-    public Evaluation evaluate(@RequestBody EvaluationRequest req) {
-        Long workerId = 1L; // 항상 1번 worker로 고정
+    // 평가 등록
+    @PostMapping("/evaluate/{workerId}")
+    public Evaluation evaluate(@PathVariable Long workerId, @RequestBody EvaluationRequest req) {
+        // workerId로 Worker를 찾아오기
         Worker worker = workerRepository.findById(workerId)
                 .orElseThrow(() -> new RuntimeException("구직자가 존재하지 않습니다."));
 
+        // Evaluation 객체 생성 및 저장
         Evaluation eval = new Evaluation(
                 req.getSincerityDelta(),
                 req.getLateDelta(),
                 req.getAbsentDelta(),
-                worker
+                worker  // worker 설정
         );
+        // 저장된 Evaluation 반환
         return evaluationRepository.save(eval);
     }
-
 
     // 점수 요약 조회
     @GetMapping("/summary/{workerId}")

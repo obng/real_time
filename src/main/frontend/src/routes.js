@@ -12,7 +12,8 @@ import WorkerNotifications from 'layouts/worker/notifications';
 import WorkerProfile from 'layouts/worker/profile';
 
 // 평가
-import EvaluationPage from 'layouts/evaluation/EvaluationPage';
+import WorkerEvaluationPage from 'pages/WorkerEvaluationPage';
+import OwnerEvaluationPage from 'pages/OwnerEvaluationPage';
 // @mui icons
 import Icon from '@mui/material/Icon';
 
@@ -56,10 +57,10 @@ export const ownerRoutes = [
   {
     type: 'collapse',
     name: '알바 평가',
-    key: 'owner-evaluation',
+    key: 'worker-evaluation',
     icon: <Icon fontSize="small">star</Icon>,
-    route: '/evaluation',
-    component: <EvaluationPage />,
+    route: '/owner/evaluate-worker',
+    component: <WorkerEvaluationPage />,
   },
 ];
 
@@ -93,9 +94,9 @@ export const workerRoutes = [
   {
     type: 'collapse',
     name: '사장 평가',
-    key: 'worker-evaluation',
+    key: 'owner-evaluation',
     icon: <Icon fontSize="small">star</Icon>,
-    route: '/evaluation',
-    component: <EvaluationPage />,
+    route: '/worker/evaluate-owner',
+    component: <OwnerEvaluationPage />,
   },
 ];
