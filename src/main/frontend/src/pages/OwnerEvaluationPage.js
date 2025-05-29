@@ -4,7 +4,6 @@ import ReactStars from 'react-rating-stars-component';
 
 export default function OwnerEvaluationPage() {
   const ownerId = 1;
-
   const [form, setForm] = useState({
     paymentPunctuality: 0,
     workEnvironment: 0,

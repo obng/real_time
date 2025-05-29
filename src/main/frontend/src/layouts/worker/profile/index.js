@@ -10,9 +10,9 @@ import Header from 'layouts/worker/profile/components/Header';
 import { useEffect, useState } from 'react';
 
 function Overview() {
+  const workerId = 1; // 항상 1번 알바생만!
   const [profile, setProfile] = useState(null);
   const [appliedJobs, setAppliedJobs] = useState([]);
-  const workerId = 1; // 실제로는 로그인 정보에서 받아야 함
 
   useEffect(() => {
     fetch(`/api/worker/${workerId}`)
@@ -25,7 +25,7 @@ function Overview() {
         });
         setAppliedJobs(data.appliedJobs || []);
       });
-  }, [workerId]);
+  }, []); // workerId가 변하지 않으니 의존성 배열 비워도 됨
 
   return (
     <DashboardLayout>

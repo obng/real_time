@@ -4,7 +4,6 @@ import ReactStars from 'react-rating-stars-component';
 
 export default function WorkerEvaluationPage() {
   const workerId = 1; // 실제로는 useParams 등으로 받아야 함
-
   const [form, setForm] = useState({
     sincerityDelta: 0,
     lateDelta: 0,

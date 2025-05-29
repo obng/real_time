@@ -54,14 +54,6 @@ export const ownerRoutes = [
     route: '/owner/profile',
     component: <OwnerProfile />,
   },
-  {
-    type: 'collapse',
-    name: '알바 평가',
-    key: 'worker-evaluation',
-    icon: <Icon fontSize="small">star</Icon>,
-    route: '/owner/evaluate-worker',
-    component: <WorkerEvaluationPage />,
-  },
 ];
 
 // 알바생 메뉴
@@ -89,14 +81,5 @@ export const workerRoutes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: '/worker/profile',
     component: <WorkerProfile />,
-  },
-
-  {
-    type: 'collapse',
-    name: '사장 평가',
-    key: 'owner-evaluation',
-    icon: <Icon fontSize="small">star</Icon>,
-    route: '/worker/evaluate-owner',
-    component: <OwnerEvaluationPage />,
   },
 ];
