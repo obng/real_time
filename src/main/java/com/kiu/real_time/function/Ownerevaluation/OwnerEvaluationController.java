@@ -17,10 +17,10 @@ public class OwnerEvaluationController {
     @Autowired
     private OwnerRepository ownerRepository;
 
-    // 직원 -> 사장 평가
-    @PostMapping("/evaluate/{ownerId}")
-    public OwnerEvaluation evaluateowner(@PathVariable Long OwnerId, @RequestBody OwnerEvaluationRequest req) {
-        Owner owner = ownerRepository.findById(OwnerId)
+    @PostMapping("/evaluate/owner")
+    public OwnerEvaluation evaluateOwner(@RequestBody OwnerEvaluationRequest req) {
+        Long ownerId = 1L; // 항상 1번 사장으로 고정
+        Owner owner = ownerRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("해당 사장이 존재하지 않습니다."));
 
         OwnerEvaluation eval = new OwnerEvaluation(
@@ -32,6 +32,7 @@ public class OwnerEvaluationController {
 
         return ownerEvaluationRepository.save(eval);
     }
+
 
     // 사장 평가 요약
     @GetMapping("/summary/{ownerId}")

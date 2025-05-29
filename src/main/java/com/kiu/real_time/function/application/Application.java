@@ -1,5 +1,3 @@
-// 알바생 지원 내역
-
 package com.kiu.real_time.function.application;
 
 import com.kiu.real_time.person.worker.Worker;

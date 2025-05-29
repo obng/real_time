@@ -46,7 +46,7 @@ function ComplexStatisticsCard({
   dailyWage,
   numberOfWorkers,
   createdAt,
-  jobPostingId,     // 공고글 ID (props로 전달받음)
+  jobPostingId =1,     // 공고글 ID (props로 전달받음)
   workerId = 1,     // 알바생 ID (props로 전달받음)
 }) {
   const [open, setOpen] = useState(false);
