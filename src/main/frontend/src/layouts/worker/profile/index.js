@@ -96,9 +96,9 @@ function Overview() {
               background: '#ff9800',
             }}
             onClick={() => {
-              setCompletedJobs((prev) => [...prev, job.applicationId]);
               setSelectedJob(job);
               setDialogOpen(true);
+              // 여기서 setCompletedJobs를 호출하지 않는다!
             }}
           >
             근무 완료
@@ -131,6 +131,8 @@ function Overview() {
   // 평가 페이지 이동 함수
   const goToEvaluation = () => {
     setDialogOpen(false);
+    // 여기서 마감 처리!
+    setCompletedJobs((prev) => [...prev, selectedJob.applicationId]);
     // 예시: 평가 페이지로 이동 (applicationId, jobPostingId, ownerId 등 넘길 수 있음)
     window.location.href = `/worker/evaluate/${selectedJob.applicationId}`;
   };

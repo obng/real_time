@@ -35,6 +35,27 @@ function Overview() {
       });
   }, [ownerId]);
 
+  // 버튼 스타일 통일
+  const baseButtonStyle = {
+    display: 'inline-block',
+    color: 'white',
+    borderRadius: 8,
+    fontWeight: 'bold',
+    fontSize: '0.7em',
+    width: 90,
+    height: 30,
+    textAlign: 'center',
+    marginTop: 8,
+    marginRight: 8,
+    marginLeft: 16,
+    border: 'none',
+    cursor: 'pointer',
+    boxSizing: 'border-box',
+    verticalAlign: 'middle',
+    lineHeight: '30px',
+    padding: 0,
+  };
+
   // 근무 완료하기 버튼 클릭
   const handleWorkComplete = (worker) => {
     setSelectedWorker(worker);
@@ -76,7 +97,7 @@ function Overview() {
         };
       }
       return {
-        label: '근무 완료하기',
+        label: '근무 완료',
         color: '#ff9800',
         onClick: () =>
           handleWorkComplete({
@@ -143,20 +164,24 @@ function Overview() {
                     posting.applicants.map((worker, idx) => {
                       const btnProps = getButtonProps(worker, posting);
                       return (
-                        <li key={worker.applicationId} style={{ marginBottom: 8 }}>
-                          {idx + 1}. 이름: {worker.name} / 연락처: {worker.phoneNumber}
+                        <li
+                          key={worker.applicationId}
+                          style={{
+                            marginBottom: 8,
+                            display: 'flex',
+                            alignItems: 'center', // 버튼과 텍스트 수직 중앙 정렬
+                          }}
+                        >
+                          <span>
+                            {idx + 1}. 이름: {worker.name} / 연락처: {worker.phoneNumber}
+                          </span>
                           <button
                             onClick={btnProps.onClick}
                             disabled={btnProps.disabled}
                             style={{
-                              marginLeft: 10,
+                              ...baseButtonStyle,
                               background: btnProps.color,
-                              color: 'white',
-                              border: 'none',
-                              borderRadius: 4,
-                              padding: '4px 12px',
                               cursor: btnProps.disabled ? 'default' : 'pointer',
-                              minWidth: '110px',
                             }}
                           >
                             {btnProps.label}
