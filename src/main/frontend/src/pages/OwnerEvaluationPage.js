@@ -32,7 +32,7 @@ export default function OwnerEvaluationPage() {
       body: JSON.stringify(form),
     });
     alert('평가가 등록되었습니다!');
-    window.location.href = 'http://localhost:3001/owner/profile';
+    window.location.href = 'http://localhost:3000/worker/profile';
     };
    // fetch(`/api/evaluation/summary/${ownerId}`)
      // .then((res) => res.json())
@@ -62,38 +62,52 @@ export default function OwnerEvaluationPage() {
         alignItems="center"
       >
         <Typography variant="h4" gutterBottom align="center">
-          사장 별점 평가
+          사장님은 어떠셨나요?
         </Typography>
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           <Box mb={2}>
             <Typography align="center">급여 지급의 정확성</Typography>
+            <Box display="flex" justifyContent="center">
             <ReactStars
-              count={10}
+              count={5}
               size={30}
+              isHalf={true}
               value={form.paymentPunctuality}
               onChange={(v) => handleStar('paymentPunctuality', v)}
             />
+            </Box>
           </Box>
           <Box mb={2}>
             <Typography align="center">근무 환경</Typography>
+            <Box display="flex" justifyContent="center">
             <ReactStars
-              count={10}
+              count={5}
               size={30}
-              value={form.workEnvironment}
-              onChange={(v) => handleStar('workEnvironment', v)}
+              isHalf={true}
+              value={form.paymentPunctuality}
+              onChange={(v) => handleStar('paymentPunctuality', v)}
             />
+            </Box>
           </Box>
           <Box mb={2}>
             <Typography align="center">근무 시간 준수</Typography>
+            <Box display="flex" justifyContent="center">
             <ReactStars
-              count={10}
+              count={5}
               size={30}
-              value={form.workingHours}
-              onChange={(v) => handleStar('workingHours', v)}
+              isHalf={true}
+              value={form.paymentPunctuality}
+              onChange={(v) => handleStar('paymentPunctuality', v)}
             />
+            </Box>
           </Box>
           <Box display="flex" justifyContent="center">
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ color: 'white' }}
+            >
               평가 등록
             </Button>
           </Box>

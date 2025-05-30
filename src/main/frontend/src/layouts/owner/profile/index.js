@@ -19,7 +19,8 @@ function Overview() {
   const [jobPostings, setJobPostings] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState(null);
-  const [completedApplications, setCompletedApplications] = useState([]); // 근무 완료된 applicationId 목록
+  const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
+  const [acceptTarget, setAcceptTarget] = useState(null);
   const ownerId = 1;
 
   useEffect(() => {
@@ -62,23 +63,51 @@ function Overview() {
     setDialogOpen(true);
   };
 
-  // 평가 페이지로 이동 + 버튼 "마감"으로 변경
-  const goToEvaluation = () => {
+  // 평가 페이지로 이동 + 서버에 '마감' 상태 저장
+  const goToEvaluation = async () => {
     setDialogOpen(false);
-    setCompletedApplications((prev) => [...prev, selectedWorker.applicationId]);
-    // 평가 페이지로 이동
-    window.location.href = `/pages/OwnerEvaluation?jobPostingId=${selectedWorker.jobPostingId}`;
+    try {
+      await fetch(
+        `/api/applications/${selectedWorker.applicationId}/complete`,
+        { method: 'POST' }
+      );
+      const res = await fetch(`/api/owner/${ownerId}`);
+      const data = await res.json();
+      setJobPostings(data.jobPostings || []);
+      window.location.href = `/pages/WorkerEvaluation?jobPostingId=${selectedWorker.jobPostingId}`;
+    } catch (e) {
+      alert('마감 처리에 실패했습니다.');
+    }
   };
 
-  // 지원 수락 함수
-  const acceptApplication = async (applicationId) => {
-    if (!window.confirm('이 지원자를 수락하시겠습니까?')) return;
-    await fetch(`/api/owner/applications/${applicationId}/accept`, { method: 'POST' });
+  // 지원 수락/거절 함수
+  const acceptApplication = (applicationId) => {
+    setAcceptTarget(applicationId);
+    setAcceptDialogOpen(true);
+  };
+
+  const handleAccept = async () => {
+    setAcceptDialogOpen(false);
+    await fetch(`/api/owner/applications/${acceptTarget}/accept`, { method: 'POST' });
+    window.location.reload();
+  };
+
+  const handleReject = async () => {
+    setAcceptDialogOpen(false);
+    await fetch(`/api/owner/applications/${acceptTarget}/reject`, { method: 'POST' });
     window.location.reload();
   };
 
   // 버튼 상태 및 클릭 핸들러 결정 함수
   const getButtonProps = (worker, posting) => {
+    if (worker.status === '마감') {
+      return {
+        label: '마감',
+        color: '#bdbdbd',
+        onClick: null,
+        disabled: true,
+      };
+    }
     if (worker.status === '대기') {
       return {
         label: '수락',
@@ -88,14 +117,6 @@ function Overview() {
       };
     }
     if (worker.status === '승인') {
-      if (completedApplications.includes(worker.applicationId)) {
-        return {
-          label: '마감',
-          color: '#bdbdbd',
-          onClick: null,
-          disabled: true,
-        };
-      }
       return {
         label: '근무 완료',
         color: '#ff9800',
@@ -169,11 +190,14 @@ function Overview() {
                           style={{
                             marginBottom: 8,
                             display: 'flex',
-                            alignItems: 'center', // 버튼과 텍스트 수직 중앙 정렬
+                            alignItems: 'center',
                           }}
                         >
-                          <span>
+                          <span style={{ minWidth: 350, display: 'flex', alignItems: 'center' }}>
                             {idx + 1}. 이름: {worker.name} / 연락처: {worker.phoneNumber}
+                            <span style={{ marginLeft: 16, fontWeight: 500, color: '#1976d2' }}>
+                              평점: {typeof worker.rating === 'number' ? worker.rating.toFixed(1) : '0.0'}
+                            </span>
                           </span>
                           <button
                             onClick={btnProps.onClick}
@@ -210,6 +234,23 @@ function Overview() {
             </Button>
             <Button onClick={goToEvaluation} color="primary" autoFocus>
               확인
+            </Button>
+          </DialogActions>
+        </Dialog>
+        {/* 수락/거절 팝업 */}
+        <Dialog open={acceptDialogOpen} onClose={() => setAcceptDialogOpen(false)}>
+          <DialogTitle>지원자 승인/거절</DialogTitle>
+          <DialogContent>
+            <MDTypography variant="body1">
+              이 지원자를 승인 또는 거절하시겠습니까?
+            </MDTypography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleReject} color="error">
+              거절
+            </Button>
+            <Button onClick={handleAccept} color="primary" autoFocus>
+              승인
             </Button>
           </DialogActions>
         </Dialog>

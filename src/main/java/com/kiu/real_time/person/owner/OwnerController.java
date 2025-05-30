@@ -49,6 +49,7 @@ public class OwnerController {
                                         worker.getId(),
                                         worker.getName(),
                                         worker.getPhoneNumber(),
+                                        app.getWorker().getRating(),
                                         app.getStatus(),
                                         app.getId()
                                 );
@@ -80,4 +81,5 @@ public class OwnerController {
         applicationRepository.save(application);
         return ResponseEntity.ok().body("수락 완료");
     }
+
 }

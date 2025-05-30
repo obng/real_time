@@ -29,9 +29,7 @@ export default function WorkerEvaluationPage() {
       body: JSON.stringify(form),
     });
     alert('평가가 등록되었습니다!');
-    fetch(`/api/evaluate/summary/${workerId}`)
-      .then((res) => res.json())
-      .then(setSummary);
+    window.location.href = 'http://localhost:3000/owner/profile'; // ← 이 부분 추가
   };
 
   return (
@@ -56,35 +54,44 @@ export default function WorkerEvaluationPage() {
         alignItems="center"
       >
         <Typography variant="h4" gutterBottom align="center">
-          알바생 별점 평가
+          알바생은 어땠나요?
         </Typography>
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           <Box mb={2}>
             <Typography align="center">성실도</Typography>
+            <Box display="flex" justifyContent="center">
             <ReactStars
-              count={10}
+              count={5}
               size={30}
-              value={form.sincerityDelta}
-              onChange={(v) => handleStar('sincerityDelta', v)}
+              isHalf={true}
+              value={form.paymentPunctuality}
+              onChange={(v) => handleStar('paymentPunctuality', v)}
             />
+            </Box>
           </Box>
           <Box mb={2}>
             <Typography align="center">지각</Typography>
+            <Box display="flex" justifyContent="center">
             <ReactStars
-              count={10}
+              count={5}
               size={30}
-              value={form.lateDelta}
-              onChange={(v) => handleStar('lateDelta', v)}
+              isHalf={true}
+              value={form.paymentPunctuality}
+              onChange={(v) => handleStar('paymentPunctuality', v)}
             />
+            </Box>
           </Box>
           <Box mb={2}>
             <Typography align="center">결근</Typography>
+            <Box display="flex" justifyContent="center">
             <ReactStars
-              count={10}
+              count={5}
               size={30}
-              value={form.absentDelta}
-              onChange={(v) => handleStar('absentDelta', v)}
+              isHalf={true}
+              value={form.paymentPunctuality}
+              onChange={(v) => handleStar('paymentPunctuality', v)}
             />
+            </Box>
           </Box>
           <Box display="flex" justifyContent="center">
             <Button type="submit" variant="contained" color="primary">

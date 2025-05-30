@@ -35,13 +35,16 @@ public class Application {
     public static final String STATUS_PENDING = "대기";
     public static final String STATUS_CONFIRMED = "승인";
     public static final String STATUS_REJECTED = "거절";
-
-    public Application() {}
+    public static final String STATUS_COMPLETED = "마감";
 
     public Application(LocalDateTime appliedAt, String status, Worker worker, JobPosting jobPosting) {
         this.appliedAt = appliedAt;
         this.status = status;
         this.worker = worker;
         this.jobPosting = jobPosting;
+    }
+
+    public Application() {
+
     }
 }

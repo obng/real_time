@@ -34,6 +34,7 @@ public class OwnerDto {
         private Long id;
         private String name;
         private String phoneNumber;
+        private BigDecimal rating;
         private String status; // "대기", "승인", "거절"
         private Long applicationId; // 수락/거절 처리용
     }

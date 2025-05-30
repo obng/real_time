@@ -59,8 +59,7 @@ function Overview() {
   const renderStatusAndWorkCompleteButton = (job) => {
     const isCompleted = completedJobs.includes(job.applicationId);
 
-    // 근무 완료를 누른 경우: 마감 버튼만
-    if (isCompleted) {
+    if (isCompleted || job.status === '마감') {
       return (
         <button
           style={{
@@ -75,7 +74,6 @@ function Overview() {
       );
     }
 
-    // 승인 상태일 때만 근무 완료 버튼 보이게
     if (job.status === '승인') {
       return (
         <>
@@ -98,7 +96,6 @@ function Overview() {
             onClick={() => {
               setSelectedJob(job);
               setDialogOpen(true);
-              // 여기서 setCompletedJobs를 호출하지 않는다!
             }}
           >
             근무 완료
@@ -128,13 +125,24 @@ function Overview() {
     );
   };
 
-  // 평가 페이지 이동 함수
-  const goToEvaluation = () => {
+  // 근무 완료 → 평가 페이지 이동 + 서버에 '마감' 상태 저장 (성공 시에만 상태 반영)
+  const goToEvaluation = async () => {
     setDialogOpen(false);
-    // 여기서 마감 처리!
-    setCompletedJobs((prev) => [...prev, selectedJob.applicationId]);
-    // 예시: 평가 페이지로 이동 (applicationId, jobPostingId, ownerId 등 넘길 수 있음)
-    window.location.href = `/worker/evaluate/${selectedJob.applicationId}`;
+
+    try {
+      // 1. 서버에 마감 처리 요청
+      await fetch(
+        `/api/applications/${selectedJob.applicationId}/complete`,
+        { method: 'POST' }
+      );
+      // 2. UI에 반영 (성공했을 때만)
+      setCompletedJobs((prev) => [...prev, selectedJob.applicationId]);
+      // 3. 평가 페이지로 이동
+      window.location.href = `/pages/OwnerEvaluation?jobPostingId=${selectedJob.jobPostingId}`;
+    } catch (e) {
+      alert('마감 처리에 실패했습니다.');
+      // 실패 시에는 setCompletedJobs를 호출하지 않음!
+    }
   };
 
   return (

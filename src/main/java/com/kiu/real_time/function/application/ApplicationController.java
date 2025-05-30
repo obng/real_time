@@ -1,8 +1,10 @@
 package com.kiu.real_time.function.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -12,6 +14,7 @@ import java.util.Map;
 public class ApplicationController {
 
     private final ApplicationService applicationService;
+    private final ApplicationRepository applicationRepository;
 
     @PostMapping
     public ResponseEntity<?> apply(
@@ -34,4 +37,17 @@ public class ApplicationController {
             return ResponseEntity.status(500).body(Map.of("message", "서버 오류가 발생했습니다."));
         }
     }
+
+    @PostMapping("/{applicationId}/complete")
+    public ResponseEntity<?> completeApplication(@PathVariable("applicationId") Long applicationId) {
+        try {
+            applicationService.complete(applicationId);
+            return ResponseEntity.ok().body("마감 처리 완료");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+    }
+
+
+
 }

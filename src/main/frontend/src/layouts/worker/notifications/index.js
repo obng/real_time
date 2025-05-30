@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // @mui material components
 import Grid from '@mui/material/Grid';
@@ -7,93 +7,125 @@ import Card from '@mui/material/Card';
 // Material Dashboard 2 React components
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
-import MDAlert from 'components/MDAlert';
-import MDButton from 'components/MDButton';
 import MDSnackbar from 'components/MDSnackbar';
 
-// Material Dashboard 2 React example components
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
 import Footer from 'examples/Footer';
 
 function Notifications() {
-  const [successSB, setSuccessSB] = useState(false);
-  const [infoSB, setInfoSB] = useState(false);
-  const [warningSB, setWarningSB] = useState(false);
-  const [errorSB, setErrorSB] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [openNotification, setOpenNotification] = useState(null);
 
-  const openSuccessSB = () => setSuccessSB(true);
-  const closeSuccessSB = () => setSuccessSB(false);
-  const openInfoSB = () => setInfoSB(true);
-  const closeInfoSB = () => setInfoSB(false);
-  const openWarningSB = () => setWarningSB(true);
-  const closeWarningSB = () => setWarningSB(false);
-  const openErrorSB = () => setErrorSB(true);
-  const closeErrorSB = () => setErrorSB(false);
+  // 실제로는 auth context 등에서 workerId를 받아와야 합니다.
+  const workerId = 1; // 임시 하드코딩
 
-  const alertContent = (name) => (
-    <MDTypography variant="body2" color="white">
-      A simple {name} alert with{' '}
-      <MDTypography component="a" href="#" variant="body2" fontWeight="medium" color="white">
-        an example link
-      </MDTypography>
-      . Give it a click if you like.
-    </MDTypography>
-  );
+  // 1. 최초 알림 목록 불러오기
+  useEffect(() => {
+    async function fetchNotifications() {
+      try {
+        const res = await fetch(`/api/worker/notification/${workerId}`);
+        if (!res.ok) throw new Error('Failed to fetch notifications');
 
-  const renderSuccessSB = (
-    <MDSnackbar
-      color="success"
-      icon="check"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={successSB}
-      onClose={closeSuccessSB}
-      close={closeSuccessSB}
-      bgWhite
-    />
-  );
+        const data = await res.json();
+        setNotifications(data);
 
-  const renderInfoSB = (
-    <MDSnackbar
-      icon="notifications"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={infoSB}
-      onClose={closeInfoSB}
-      close={closeInfoSB}
-    />
-  );
+        // 마지막 알림이 기존 알림과 다를 경우에만 스낵바 띄움
+        if (
+          data.length > 0 &&
+          (!openNotification || data[data.length - 1].id !== openNotification.id)
+        ) {
+          setOpenNotification(data[data.length - 1]);
+        }
+      } catch (error) {
+        console.error('알림을 불러오는 중 오류 발생:', error);
+        setOpenNotification({
+          id: 'error',
+          type: 'error',
+          message: '알림을 불러오는 데 실패했습니다.',
+          dateTime: new Date().toISOString(),
+        });
+      }
+    }
 
-  const renderWarningSB = (
-    <MDSnackbar
-      color="warning"
-      icon="star"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={warningSB}
-      onClose={closeWarningSB}
-      close={closeWarningSB}
-      bgWhite
-    />
-  );
+    fetchNotifications();
+    // eslint-disable-next-line
+  }, []); // workerId가 고정이라면 빈 배열로 호출 1회만
 
-  const renderErrorSB = (
-    <MDSnackbar
-      color="error"
-      icon="warning"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
-      open={errorSB}
-      onClose={closeErrorSB}
-      close={closeErrorSB}
-      bgWhite
-    />
-  );
+  // 2. SSE(실시간 알림) 구독
+  useEffect(() => {
+    const eventSource = new EventSource(`/api/worker/notification/${workerId}/subscribe`);
+    eventSource.addEventListener("application", (event) => {
+      // event.data는 서버에서 보낸 NotificationDto(JSON)
+      let newNotification;
+      try {
+        newNotification = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
+      } catch {
+        newNotification = {
+          id: Date.now(),
+          type: 'info',
+          message: event.data,
+          dateTime: new Date().toISOString(),
+        };
+      }
+      setNotifications((prev) => [...prev, newNotification]);
+      setOpenNotification(newNotification);
+    });
+
+    eventSource.onerror = (err) => {
+      console.error('SSE 연결 오류:', err);
+      eventSource.close();
+    };
+
+    return () => eventSource.close();
+  }, [workerId]);
+
+  const handleClose = () => setOpenNotification(null);
+
+  const formatDate = (dateTimeStr) => {
+    if (!dateTimeStr) return '';
+    const date = new Date(dateTimeStr);
+    if (isNaN(date.getTime())) return dateTimeStr; // ISO가 아닐 경우
+    return date.toLocaleString(); // 예: "2025. 5. 25. 오후 2:52"
+  };
+
+  const renderSnackbar = (notification) => {
+    if (!notification) return null;
+
+    let color = 'info';
+    let icon = 'notifications';
+    switch (notification.type) {
+      case 'success':
+        color = 'success';
+        icon = 'check_circle';
+        break;
+      case 'warning':
+        color = 'warning';
+        icon = 'warning';
+        break;
+      case 'error':
+        color = 'error';
+        icon = 'error';
+        break;
+      default:
+        color = 'info';
+        icon = 'notifications';
+    }
+
+    return (
+      <MDSnackbar
+        color={color}
+        icon={icon}
+        title="새 알림"
+        content={notification.message}
+        dateTime={formatDate(notification.dateTime)}
+        open={Boolean(notification)}
+        onClose={handleClose}
+        close={handleClose}
+        bgWhite
+      />
+    );
+  };
 
   return (
     <DashboardLayout>
@@ -103,77 +135,33 @@ function Notifications() {
           <Grid item xs={12} lg={8}>
             <Card>
               <MDBox p={2}>
-                <MDTypography variant="h5">Alerts</MDTypography>
+                <MDTypography variant="h5">알림 목록</MDTypography>
               </MDBox>
               <MDBox pt={2} px={2}>
-                <MDAlert color="primary" dismissible>
-                  {alertContent('primary')}
-                </MDAlert>
-                <MDAlert color="secondary" dismissible>
-                  {alertContent('secondary')}
-                </MDAlert>
-                <MDAlert color="success" dismissible>
-                  {alertContent('success')}
-                </MDAlert>
-                <MDAlert color="error" dismissible>
-                  {alertContent('error')}
-                </MDAlert>
-                <MDAlert color="warning" dismissible>
-                  {alertContent('warning')}
-                </MDAlert>
-                <MDAlert color="info" dismissible>
-                  {alertContent('info')}
-                </MDAlert>
-                <MDAlert color="light" dismissible>
-                  {alertContent('light')}
-                </MDAlert>
-                <MDAlert color="dark" dismissible>
-                  {alertContent('dark')}
-                </MDAlert>
-              </MDBox>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} lg={8}>
-            <Card>
-              <MDBox p={2} lineHeight={0}>
-                <MDTypography variant="h5">Notifications</MDTypography>
-                <MDTypography variant="button" color="text" fontWeight="regular">
-                  Notifications on this page use Toasts from Bootstrap. Read more details here.
-                </MDTypography>
-              </MDBox>
-              <MDBox p={2}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="success" onClick={openSuccessSB} fullWidth>
-                      success notification
-                    </MDButton>
-                    {renderSuccessSB}
-                  </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="info" onClick={openInfoSB} fullWidth>
-                      info notification
-                    </MDButton>
-                    {renderInfoSB}
-                  </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="warning" onClick={openWarningSB} fullWidth>
-                      warning notification
-                    </MDButton>
-                    {renderWarningSB}
-                  </Grid>
-                  <Grid item xs={12} sm={6} lg={3}>
-                    <MDButton variant="gradient" color="error" onClick={openErrorSB} fullWidth>
-                      error notification
-                    </MDButton>
-                    {renderErrorSB}
-                  </Grid>
-                </Grid>
+                {notifications.length === 0 ? (
+                  <MDTypography variant="body2" color="text">
+                    현재 알림이 없습니다.
+                  </MDTypography>
+                ) : (
+                  notifications.map((n) => (
+                    <MDTypography
+                      key={n.id}
+                      variant="body1"
+                      color={'text.primary'}
+                      sx={{ mb: 1 }}
+                    >
+                      [{formatDate(n.dateTime)}] {n.message}
+                    </MDTypography>
+                  ))
+                )}
               </MDBox>
             </Card>
           </Grid>
         </Grid>
       </MDBox>
+
+      {renderSnackbar(openNotification)}
+
       <Footer />
     </DashboardLayout>
   );
